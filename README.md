@@ -1,5 +1,5 @@
 # Emitter
-Emitter is a bash library that helps you to be able to listen for events and run a particular function if the event is emitted
+Emitter is a bash library that helps you to be able to create custom event listeners and assign a function to be executed whenever the listener is been emitted
 
 **Usage**
 `event` takes three subcommands which are `attach` `emit` and `detach`
