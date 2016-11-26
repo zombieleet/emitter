@@ -65,7 +65,7 @@ event() {
 	    local typeofEvent=$2
 	    [[ ! ${#@} -eq 2 ]] && {
 		printf "%s\n" "Invalid Number of Arguments"
-		return 0;
+		return 1;
 	    }
 	    for stacks in "${!Stack[@]}";do
 		if [[ "$stacks" == "$typeofEvent" ]];then
