@@ -1,0 +1,3 @@
+my name is victory osikwemhe
+my default shell is bash
+i love bash
