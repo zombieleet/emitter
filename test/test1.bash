@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../evt.sh
+source ../emitter.sh
 
 readme=$(<"test1.txt")
 
