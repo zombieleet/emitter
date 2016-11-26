@@ -17,7 +17,7 @@ ReadFile() {
     echo "------------------------- READING $file -----------------------"
     while read log;do
 	printf "%s\n" "$log"
-    done < <( cat "$file" )
+    done < "$file"
     echo "------------------------- DONE READING $file ------------------"
 }
 

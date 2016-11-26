@@ -2,7 +2,6 @@
 
 source ../emitter.sh
 
-readme=$(<"test1.txt")
 
 readFile() {
     local text=$1
@@ -19,7 +18,7 @@ while read line;do
     # emiting the event
     event emit fileRead "'$line' $i"
     : $((i++))
-done < <(  echo "${readme}" )
+done < "test1.txt"
 
 # detaching the event from the stack
 event detach fileRead
@@ -29,4 +28,4 @@ while read line;do
     # event is not emmited since fileRead is not among the stack anymore
     event emit fileRead "'$line' $i"
     : $((i++))
-done < <(  echo "${readme}" )
+done < "test1.txt"

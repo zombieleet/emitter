@@ -60,7 +60,7 @@ see line 7 and line 27
 13    echo "------------------------- READING $file -----------------------"
 14    while read log;do
 15      printf "%s\n" "$log"
-16    done < <( cat "$file" )
+16    done < "$file"
 17    echo "------------------------- DONE READING $file ------------------"
 18 }
 19
