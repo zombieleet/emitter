@@ -82,4 +82,4 @@ see line 7 and line 27
 
 
 ***License***
-GNU
+GNU General Public License
