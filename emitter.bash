@@ -12,8 +12,7 @@ event() {
 
 	    # total number of arguement must be exactly 3
 	    [[ ! ${#@} -eq 3 ]] && {
-		throw error "Invalid Number of Arguments $subcomm"
-		return 1;
+		throw error "Invalid Number of Arguments to $subcomm"
 	    }
 
 	    # if subcomm is attach assign the second variable as the type of the event
@@ -37,16 +36,15 @@ event() {
 	emit)
 	    # total number of argument must not be less than 2
 
-	    [[ ${#@} -lt 2 ]] && 
-		throw error "Invalid Number of Arguments $subcomm"
-		return 1;
+	    [[ ${#@} -lt 2 ]] && {
+		throw error "Invalid Number of Arguments to $subcomm"
 	    }
 	    
 	    # assign the second variable as the type of event
 	    # argsToCallback contains args to be passed to the function  messageCallback inside the attach case
 	    # the args should be passed like this
-	          # "firstarg secondarg 'third arg'" <<< use  ' ' if the argument contains space or tabs
-	          # the last two argument to the messageCallback function is the typeofEvent fired and the messageCallback function itself
+	    # "firstarg secondarg 'third arg'" <<< use  ' ' if the argument contains space or tabs
+	    # the last two argument to the messageCallback function is the typeofEvent fired and the messageCallback function itself
 	    local typeofEvent=$2
 	    local argsToCallback=$3
 	    read -a argsToCallback <<<${argsToCallback}
@@ -77,7 +75,7 @@ event() {
 	    # Deatch ( remove ) the event type from the Stack
 	    local typeofEvent=$2
 	    [[ ! ${#@} -eq 2 ]] && {
-		throw error "Invalid Number of Arguments $subcomm"
+		throw error "Invalid Number of Arguments to $subcomm"
 	    }
 	    
 	    for stacks in "${!Stack[@]}";do
@@ -103,14 +101,14 @@ event() {
 	    done
 	    ;;
 	*)
-	    throw error "%s\n" "Invalid subcommand $subcomm"
+	    throw error "%s\n" "Invalid subcommand to $subcomm"
 	    ;;
     esac
 }
 s() {
     echo "hi"
 }
-event attach Say s
+event attach Say
 event attach Vic s
 event emit Say
 event emit Vic

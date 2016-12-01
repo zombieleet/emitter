@@ -20,11 +20,9 @@ throw() {
 		#   the source builtin command as the calling function,
 		#     so we have to minus by 2
 		message="An Error has occured in ${FUNCNAME[$(( ${#FUNCNAME[@]} - 2))]}"
-		
-		
 	    }
 	    printf "${open}${bold}${red}%s${close}\n" "${message}"
-	    exit ;
+
 	    ;;
 	warning)
 	    [[ -z ${message} ]] && {
@@ -36,5 +34,5 @@ throw() {
 	    ${FUNCNAME} error "Invalid Arugment was passed to ${FUNCNAME}"
 	    ;;
     esac
-		      
+    exit 1;
 }
