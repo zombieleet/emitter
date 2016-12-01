@@ -89,4 +89,4 @@ example
 
 
 ***License***
-GNU
+GNU General Public License
