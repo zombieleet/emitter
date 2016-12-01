@@ -3,7 +3,7 @@
 declare -A Stack
 
 event() {
-
+    source throw.bash
     local subcomm=$1
 
     case $subcomm in
@@ -26,7 +26,7 @@ event() {
 	    declare -F ${messageCallback} >/dev/null
 	    # if messageCallback is not a function return from this function
 	    [[ $? -gt 0 ]] && {
-		printf "%s\n" "${messageCallback} is not defined"
+		throw error "${messageCallback} is not defined"
 		return 1;
 	    }
 
@@ -34,10 +34,10 @@ event() {
 	    Stack[$typeofEvent]=${messageCallback}
 	    ;;
 	emit)
-	    # total number of argument must be less than 3
-
-	    [[ ${#@} -lt 3 ]] && {
-		printf "%s\n" "Invalid Number of Arguments"
+	    # total number of argument must not be less than 2
+	    echo ${#@}
+	    [[ ${#@} -lt 2 ]] && {
+		throw error "Invalid Number of Arguments"
 		return 1;
 	    }
 
@@ -59,6 +59,7 @@ event() {
 		    eval "${Stack[$stacks]}" "${argsToCallback[*]}"
 		fi
 	    done
+	    echo $?
 	    ;;
 	detach)
 	    # Deatch ( remove ) the event type from the Stack
@@ -73,8 +74,22 @@ event() {
 		fi
 	    done
 	    ;;
+	list)
+	    [[ ${#Stack[@]} -eq 0 ]] && {
+		throw warning 
+	     }
+	    for stacks in "${!Stack[@]}";do
+		printf "%s\n" "${stacks}"
+	    done
+	    ;;
 	*)
 	    printf "%s\n" "Invalid subcommand $subcomm"
 	    ;;
     esac
 }
+s() {
+    echo "$1 $2 $3"
+}
+event attach Say s
+event emit Say "hi"
+
