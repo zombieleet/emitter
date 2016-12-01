@@ -12,14 +12,15 @@ throw() {
     
     case $subComm in
 	error)
-
+	    
 
 	    [[ -z ${message} ]] && {
-		#${FUNCNAME[$(( ${#FUNCNAME[@]} - $(( ${#FUNCNAME[@]} - 2 )) ))]} ,
+                #${FUNCNAME[$(( ${#FUNCNAME[@]} - $(( ${#FUNCNAME[@]} - 2 )) ))]} ,
 		#  to get the calling function, when you do a - 1 it gives 
 		#   the source builtin command as the calling function,
 		#     so we have to minus by 2
-		message="An Error has occured in ${FUNCNAME[$(( ${#FUNCNAME[@]} - $(( ${#FUNCNAME[@]} - 2 )) ))]}"
+		message="An Error has occured in ${FUNCNAME[$(( ${#FUNCNAME[@]} - 2))]}"
+		
 		
 	    }
 	    printf "${open}${bold}${red}%s${close}\n" "${message}"
@@ -27,13 +28,13 @@ throw() {
 	    ;;
 	warning)
 	    [[ -z ${message} ]] && {
-		message="Something is wrong at ${FUNCNAME[$(( ${#FUNCNAME[@]} - $(( ${#FUNCNAME[@]} - 2 )) ))]}"
+		message="An Error has occured in ${FUNCNAME[$(( ${#FUNCNAME[@]} - 2))]}"
 	    }
 	    printf "${open}${bold}${yellow}%s${close}\n" "${message}"
 	;;
 	*)
 	    ${FUNCNAME} error "Invalid Arugment was passed to ${FUNCNAME}"
-	;;
+	    ;;
     esac
 		      
 }
