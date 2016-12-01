@@ -101,7 +101,7 @@ event() {
 	    done
 	    ;;
 	*)
-	    throw error "%s\n" "Invalid subcommand to $subcomm"
+	    throw error "Invalid subcommand to $subcomm"
 	    ;;
     esac
 }
