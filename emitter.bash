@@ -105,17 +105,3 @@ event() {
 	    ;;
     esac
 }
-s() {
-    echo "hi"
-}
-event attach Say
-event attach Vic s
-event emit Say
-event emit Vic
-
-#event detach Say
-
-#event list
-
-event emit Q
-event detach Q
