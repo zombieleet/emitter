@@ -6,12 +6,13 @@ event() {
     source throw.bash
     local subcomm=$1
 
+    
     case $subcomm in
 	attach)
 
 	    # total number of arguement must be exactly 3
 	    [[ ! ${#@} -eq 3 ]] && {
-		printf "%s\n" "Invalid Number of Arguments"
+		throw error "Invalid Number of Arguments $subcomm"
 		return 1;
 	    }
 
@@ -35,12 +36,12 @@ event() {
 	    ;;
 	emit)
 	    # total number of argument must not be less than 2
-	    echo ${#@}
-	    [[ ${#@} -lt 2 ]] && {
-		throw error "Invalid Number of Arguments"
+
+	    [[ ${#@} -lt 2 ]] && 
+		throw error "Invalid Number of Arguments $subcomm"
 		return 1;
 	    }
-
+	    
 	    # assign the second variable as the type of event
 	    # argsToCallback contains args to be passed to the function  messageCallback inside the attach case
 	    # the args should be passed like this
@@ -52,44 +53,71 @@ event() {
 	    argsToCallback[$(( ${#argsToCallback[@]} + 1 ))]=${typeofEvent}
 
 	    shift 2
+
+	    # if there is not listener in the stack, throw an error
+	    [[ ${#Stack[@]} -eq 0 ]] && {
+		throw error "There is no listener in the stack to emit"
+	    }
+
+	    
 	    for stacks in "${!Stack[@]}";do
-		if [[ "$stacks" == "$typeofEvent" ]];then
+		[[ "$stacks" == "$typeofEvent" ]] && {
 		    argsToCallback[$(( ${#argsToCallback[@]} + 1 ))]=${Stack[$stacks]}
-		    #echo ${argsToCallback[@]}
 		    eval "${Stack[$stacks]}" "${argsToCallback[*]}"
-		fi
+		    break
+		}
 	    done
-	    echo $?
+
+	    [[ $? -gt 0 ]] && {
+		throw error "cannot emit ${typeofEvent} because it has not been registerd as a listener"
+	    }
+
 	    ;;
 	detach)
 	    # Deatch ( remove ) the event type from the Stack
 	    local typeofEvent=$2
 	    [[ ! ${#@} -eq 2 ]] && {
-		printf "%s\n" "Invalid Number of Arguments"
-		return 1;
+		throw error "Invalid Number of Arguments $subcomm"
 	    }
+	    
 	    for stacks in "${!Stack[@]}";do
-		if [[ "$stacks" == "$typeofEvent" ]];then
+		
+		[[ "$stacks" == "$typeofEvent" ]] && {
 		    unset Stack[$stacks]
-		fi
+		    break 
+		}
+		
 	    done
+	    
+	    [[ $? -gt 0 ]] && {
+		throw error "cannot detach ${typeofEvent} because it has not been registerd as a listener"
+	    }
+
 	    ;;
 	list)
 	    [[ ${#Stack[@]} -eq 0 ]] && {
-		throw warning 
-	     }
+		throw error "There is no listener in the stack"
+	    }
 	    for stacks in "${!Stack[@]}";do
 		printf "%s\n" "${stacks}"
 	    done
 	    ;;
 	*)
-	    printf "%s\n" "Invalid subcommand $subcomm"
+	    throw error "%s\n" "Invalid subcommand $subcomm"
 	    ;;
     esac
 }
 s() {
-    echo "$1 $2 $3"
+    echo "hi"
 }
 event attach Say s
-event emit Say "hi"
+event attach Vic s
+event emit Say
+event emit Vic
 
+#event detach Say
+
+#event list
+
+event emit Q
+event detach Q
