@@ -73,7 +73,14 @@ see line 7 and line 27
 26
 27  event emit showfile "log.txt" ; #log.txt will be passed to ReadFile
 28}
+
 ```
+
+**List Event**
+`event list` takes no argument. It lists the total number of event listener in the Stack
+
+example
+`event list`
 
 **Detach Event**
 `event detach` takes a single argument, it detaches/removes the event you don't want to listen for again from the Stack.
