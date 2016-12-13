@@ -7,7 +7,7 @@ Emitter is a bash library that helps you to be able to create custom event liste
 **event attach**
 `event attach` takes two argument which is the name of the event you want to listen for and the function to execute when the event is emitted
 
-```
+```bash
 1  #!/usr/bin/env bash
 2  source ../evt.sh
 3  CreateFile() {
@@ -31,7 +31,7 @@ Note:- Under the hood, 2 other argument are passed to the callback function whic
 
 for example:
 
-```
+```bash
   event attach talk SayShell # talk is the event to listen for, SayShell is the callback function to execute when the event talk is been emitted
 
   event emit talk "bash ksh zsh sh" # talk is the event to listen for, "bash ksh zsh sh" is the argument passed to SayShell
@@ -44,7 +44,7 @@ for example:
 
 see line 7 and line 27
 
-```
+```bash
 1  #!/usr/bin/env bash
 2  source ../evt.sh
 3  CreateFile() {
