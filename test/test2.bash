@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../emitter.sh
+source ../emitter.bash
 
 
 CreateFile() {

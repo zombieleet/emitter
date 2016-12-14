@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 declare -A Stack
-
+readonly maxListeners=1000
 event() {
-    source throw.bash
+
     local subcomm=$1
 
     
@@ -29,6 +29,10 @@ event() {
 		throw error "${messageCallback} is not defined"
 		return 1;
 	    }
+	    
+	    if [[ ${#Stack[@]} -eq ${maxListeners} ]];then
+		throw error "Number of listeners exceeded"
+	    fi
 
 	    # assigining the event type as a key to the global Array Stack and messageCallback as it's value
 	    Stack[$typeofEvent]=${messageCallback}
@@ -61,7 +65,7 @@ event() {
 	    for stacks in "${!Stack[@]}";do
 		[[ "$stacks" == "$typeofEvent" ]] && {
 		    argsToCallback[$(( ${#argsToCallback[@]} + 1 ))]=${Stack[$stacks]}
-		    eval "${Stack[$stacks]}" "${argsToCallback[*]}"
+		    ${Stack[$stacks]} "${argsToCallback[*]}"
 		    break
 		}
 	    done
@@ -101,7 +105,46 @@ event() {
 	    done
 	    ;;
 	*)
-	    throw error "Invalid subcommand to $subcomm"
+	    throw error "\" $subcomm \" is not a valid subcommand"
 	    ;;
     esac
 }
+
+
+throw() {
+    local subComm="${1}"
+    local message="${2}"
+    local open="\e["
+    local close="\e[0m"
+    local bold="1;"
+    local light="0;"
+    local red="31m"
+    local yellow="33m"
+    
+    case $subComm in
+	error)
+	    
+	    
+	    [[ -z ${message} ]] && {
+                #${FUNCNAME[$(( ${#FUNCNAME[@]} - $(( ${#FUNCNAME[@]} - 2 )) ))]} ,
+		#  to get the calling function, when you do a - 1 it gives 
+		#   the source builtin command as the calling function,
+		#     so we have to minus by 2
+		message="An Error has occured in ${FUNCNAME[$(( ${#FUNCNAME[@]} - 2))]}"
+	    }
+	    printf "${open}${bold}${red}%s${close}\n" "${message}"
+	    
+	    ;;
+	warning)
+	    [[ -z ${message} ]] && {
+		message="An Error has occured in ${FUNCNAME[$(( ${#FUNCNAME[@]} - 2))]}"
+	    }
+	    printf "${open}${bold}${yellow}%s${close}\n" "${message}"
+	    ;;
+	*)
+	    ${FUNCNAME} error "Invalid Arugment was passed to ${FUNCNAME}"
+	    ;;
+    esac
+    exit 1;
+}
+
