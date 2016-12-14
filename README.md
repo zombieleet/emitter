@@ -86,7 +86,8 @@ example
 `event detach` takes a single argument, it detaches/removes the event you don't want to listen for again from the Stack.
 
 `event detach eventName`
-
+**maxlisteners**
+The total number of maxlisteners allowed is 1000, and it's readonly, you cannot modify it in your script, except you want to modify it directly from the emitter library
 
 ***License***
 GNU General Public License
