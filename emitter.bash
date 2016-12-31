@@ -65,7 +65,7 @@ event() {
 	    for stacks in "${!Stack[@]}";do
 		[[ "$stacks" == "$typeofEvent" ]] && {
 		    argsToCallback[$(( ${#argsToCallback[@]} + 1 ))]=${Stack[$stacks]}
-		    ${Stack[$stacks]} "${argsToCallback[*]}"
+		    eval ${Stack[$stacks]} "${argsToCallback[*]}"
 		    break
 		}
 	    done
