@@ -116,13 +116,13 @@ see line 7 and line 27
 **List Event**
 `event list` takes no argument. It lists the total number of event listener in the Stack
 
-example
-`event list`
-
 
 **setmaxlistener**
 `event setMaxlistener` takes one argument which must be an integer. It resets the default maximum listener by the specified ones
 
+
+example
+`event list`
 
 **Detach Event**
 `event detach` takes a single argument, it detaches/removes the event you don't want to listen for again from the Stack.

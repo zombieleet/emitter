@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 declare -A Stack
-readonly maxListeners=1000
+declare -i _MAXLISTENER_=11
 event() {
 
     local subcomm=$1
@@ -30,9 +30,12 @@ event() {
 		return 1;
 	    }
 	    
-	    if [[ ${#Stack[@]} -eq ${maxListeners} ]];then
-		throw error "Number of listeners exceeded"
-	    fi
+	    {
+		[[ ${#Stack[@]} -eq ${_MAXLISTENER_} ]] || [[ ${#Stack[@]} -gt ${_MAXLISTENER_} ]]
+		
+	    } && {
+		throw error "Number of listeners exceeded, use setMaxlisteners subcommand to increment the amount of listeners"
+	    }
 
 	    # assigining the event type as a key to the global Array Stack and messageCallback as it's value
 	    Stack[$typeofEvent]=${messageCallback}
@@ -140,6 +143,21 @@ event() {
 	    ;;
 	removeAll)
 	    unset Stack
+	    ;;
+	setMaxListener)
+	    
+	    [[ ! ${#@} -eq 2 ]] && {
+		throw error "$subcomm requires only one argument"
+	    }
+	    
+	    local num=${2}
+	    
+	    [[ ! ${num} =~ ^[[:digit:]]{1,}$ ]] && {
+		throw error "the argument to $subcomm must be an integer"
+	    }
+
+	    _MAXLISTENER_=${num}
+	    
 	    ;;
 	*)
 	    throw error "\" $subcomm \" is not a valid subcommand"
