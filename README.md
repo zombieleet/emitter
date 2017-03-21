@@ -105,11 +105,12 @@ see line 7 and line 27
 
 	event once addNumber 2 2	
 
-
 ```
 
 **NOTE:** once the event `addNumber` is emitted trying to emit again will cause an error
 
+
+**removeall listener** This subcommands removes all listener by unsetting the Stack array 
 
 **List Event**
 `event list` takes no argument. It lists the total number of event listener in the Stack

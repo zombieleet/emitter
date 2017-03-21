@@ -138,6 +138,9 @@ event() {
 		printf "%s\n" "${stacks}"
 	    done
 	    ;;
+	removeAll)
+	    unset Stack
+	    ;;
 	*)
 	    throw error "\" $subcomm \" is not a valid subcommand"
 	    ;;
