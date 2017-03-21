@@ -75,6 +75,41 @@ see line 7 and line 27
 28}
 
 ```
+**once**
+`event once` works like `event emit`. The only difference is that once an event is emitted in `event once` that event is removed as an event listener i.e it is only executed ones
+
+
+```bash
+	# check test/once.sh
+		
+	source ../emitter.bash;
+
+	s() {
+		echo "${1}";
+	}
+	event attach sayHoss s
+
+	event emit sayHoss 'victory'
+	event emit sayHoss 'victory'
+	event emit sayHoss 'victory'
+
+
+	ff() {
+		local _num1=${1};
+		local _num2=${2};
+
+	    printf "%d\n" "$(( _num1 + _num2 ))";
+	}
+
+	event attach addNumber ff
+
+	event once addNumber 2 2	
+
+
+```
+
+**NOTE:** once the event `addNumber` is emitted trying to emit again will cause an error
+
 
 **List Event**
 `event list` takes no argument. It lists the total number of event listener in the Stack

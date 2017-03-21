@@ -39,7 +39,7 @@ event() {
 	    ;;
 	emit)
 	    # total number of argument must not be less than 2
-
+	    
 	    [[ ${#@} -lt 2 ]] && {
 		throw error "Invalid Number of Arguments to $subcomm"
 	    }
@@ -94,7 +94,41 @@ event() {
 	    [[ $? -gt 0 ]] && {
 		throw error "cannot detach ${typeofEvent} because it has not been registerd as a listener"
 	    }
+	    
+	    ;;
+	once)
+	    # total number of argument must not be less than 2
+	    
+	    [[ ${#@} -lt 2 ]] && {
+		throw error "Invalid Number of Arguments to $subcomm"
+	    }
+	    
+	    local typeofEvent=$2
+	    local argsToCallback=$3
+	    read -a argsToCallback <<<${argsToCallback}
+	    argsToCallback[$(( ${#argsToCallback[@]} + 1 ))]=${typeofEvent}
 
+	    shift 2
+
+	    # if there is not listener in the stack, throw an error
+	    [[ ${#Stack[@]} -eq 0 ]] && {
+		throw error "There is no listener in the stack to emit"
+	    }
+	    
+	    
+	    for stacks in "${!Stack[@]}";do
+		[[ "$stacks" == "$typeofEvent" ]] && {
+		    argsToCallback[$(( ${#argsToCallback[@]} + 1 ))]=${Stack[$stacks]}
+		    eval ${Stack[$stacks]} "${argsToCallback[*]}"
+		    unset Stack[$stacks]; 
+		    break
+		}
+	    done
+
+	    [[ $? -gt 0 ]] && {
+		throw error "cannot emit ${typeofEvent} because it has not been registerd as a listener"
+	    }
+	    
 	    ;;
 	list)
 	    [[ ${#Stack[@]} -eq 0 ]] && {

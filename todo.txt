@@ -1,0 +1,1 @@
+add newListener support, this will be emitted anytime a listener is added
