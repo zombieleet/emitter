@@ -98,7 +98,7 @@ see line 7 and line 27
 		local _num1=${1};
 		local _num2=${2};
 
-	    printf "%d\n" "$(( _num1 + _num2 ))";
+		printf "%d\n" "$(( _num1 + _num2 ))";
 	}
 
 	event attach addNumber ff
